@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^api/audits/', include('audits.urls.api_urls', namespace='api-audits')),
     url(r'^api/applications/', include('applications.urls.api_urls', namespace='api-applications')),
     url(r'^api/ops/', include('ops.urls.api_urls', namespace='api-ops')),
+    url(r'^api/shell/', include('shell.urls.api_urls', namespace='api-shell')),
 
 ]
 

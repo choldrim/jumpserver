@@ -343,3 +343,7 @@ BOOTSTRAP3 = {
     # Set placeholder attributes to label if no placeholder is provided
     'set_placeholder': True,
 }
+
+# default coco server for shell program
+SHELL_SERVER = CONFIG.SHELL_SERVER
+SHELL_PORT = CONFIG.SHELL_PORT

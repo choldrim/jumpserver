@@ -91,6 +91,10 @@ class Config:
     # You can set jumpserver usage url here, that when user submit wizard redirect to
     USER_GUIDE_URL = ''
 
+    # default coco server for win or mac shell
+    SHELL_SERVER = ''
+    SHELL_PORT = 2222
+
     def __init__(self):
         pass
 

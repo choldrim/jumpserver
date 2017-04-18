@@ -73,6 +73,16 @@
 
     </ul>
 </li>
+
+<li id="folders">
+    <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">{% trans 'Folders' %}</span><span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level">
+        <li id="all-folders">
+            <a href="{% url 'folders:folder-list' %}">{% trans 'All folders' %}</a>
+        </li>
+    </ul>
+</li>
+
 {#<li id="">#}
 {#    <a href="#">#}
 {#        <i class="fa fa-download"></i> <span class="nav-label">{% trans 'File' %}</span><span class="fa arrow"></span>#}

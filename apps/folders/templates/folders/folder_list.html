@@ -1,0 +1,174 @@
+{% extends '_base_list.html' %}
+{% load i18n %}
+{% load static %}
+{% block custom_head_css_js %}
+  <link href="{% static "css/plugins/jstree/style.min.css" %}" rel="stylesheet">
+
+<style type="text/css">
+</style>
+
+{% endblock %}
+{% block content_left_head %}{% endblock %}
+
+{% block table_search %}
+{% endblock %}
+
+{% block table_container %}
+<div id="folder-tree" class="col-sm-6"></div>
+<div class="details col-sm-6">
+  <div class="host-detail">
+    <div class="host-detail-line">
+      <div class="host-detail-item">
+        <label>{% trans 'Internal IP'%}:</label>
+        <span id="ip"></span>
+      </div>
+      <div class="host-detail-item">
+        <label>{% trans 'Public IP' %}:</label>
+        <span id="public-ip"></span>
+      </div>
+    </div>
+    <div class="host-detail-line">
+      <div class="host-detail-item">
+        <label>{% trans 'Os type' %}:</label>
+        <span id="os"></span>
+      </div>
+      <div class="host-detail-item">
+        <label>{% trans 'Os arch' %}:</label>
+        <span id="os-arch"></span>
+      </div>
+    </div>
+    <div class="host-detail-line connect-btn-line">
+      <button class="btn btn-warning" id="connect-btn">{% trans 'Connect' %}</button>
+    </div>
+  </div>
+</div>
+{% include 'assets/_asset_import_modal.html' %}
+{% endblock %}
+
+{% block custom_foot_js %}
+  <script src="{% static 'js/jquery.form.min.js' %}"></script>
+  <script src="{% static 'js/plugins/jstree/jstree.min.js' %}"></script>
+<script>
+$(document).ready(function () {
+    var current_selected_asset;
+    $('#folder-tree').jstree({
+        'core': {
+            'data': { 
+              'url': "{% url 'api-folders:get-node' %}",
+                'dataType': 'json'
+            },
+            'check_callback' : function(o, n, p, i, m) {
+                if(m && m.dnd && m.pos !== 'i') { return false; }
+                if(o === "move_node" || o === "copy_node") {
+                    if(this.get_node(n).parent === this.get_node(p).id) { return false; }
+                }
+                return true;
+            },
+        },
+        'sort' : function(a, b) {
+            return this.get_type(a) === this.get_type(b) ? (this.get_text(a) > this.get_text(b) ? 1 : -1) : (this.get_type(a) >= this.get_type(b) ? 1 : -1);
+        },
+        'contextmenu' : {
+            'items' : function(node) {
+                var tmp = $.jstree.defaults.contextmenu.items();
+                delete tmp.create.action;
+                delete tmp.ccp;
+                tmp.create.label = "New";
+                tmp.create.submenu = {
+                    "create_folder" : {
+                        "separator_after"    : true,
+                        "label"                : "Folder",
+                        "action"            : function (data) {
+                            var inst = $.jstree.reference(data.reference),
+                                obj = inst.get_node(data.reference);
+                            inst.create_node(obj, { type : "default" }, "last", function (new_node) {
+                                setTimeout(function () { inst.edit(new_node); },0);
+                            });
+                        }
+                    },
+                    "create_file" : {
+                        "label"                : "File",
+                        "action"            : function (data) {
+                            var inst = $.jstree.reference(data.reference),
+                                obj = inst.get_node(data.reference);
+                            inst.create_node(obj, { type : "file" }, "last", function (new_node) {
+                                setTimeout(function () { inst.edit(new_node); },0);
+                            });
+                        }
+                    }
+                };
+                if(this.get_type(node) === "file") {
+                    delete tmp.create;
+                }
+                return tmp;
+            }
+        },
+        'unique' : {
+            'duplicate' : function (name, counter) {
+                return name + ' ' + counter;
+            }
+        },
+        'plugins' : ['state','dnd','sort','types','contextmenu','unique']
+    })
+    .on('delete_node.jstree', function (e, data) {
+        $.get("{% url 'api-folders:delete-node' %}", { 'id' : data.node.id })
+            .fail(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('create_node.jstree', function (e, data) {
+        $.get("{% url 'api-folders:create-node' %}", { 'type' : data.node.type, 'id' : data.node.parent, 'text' : data.node.text })
+            .done(function (d) {
+                data.instance.set_id(data.node, d.id);
+            })
+            .fail(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('rename_node.jstree', function (e, data) {
+        $.get("{% url 'api-folders:rename-node' %}", { 'id' : data.node.id, 'text' : data.text })
+            .done(function (d) {
+                data.instance.set_id(data.node, d.id);
+            })
+            .fail(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('move_node.jstree', function (e, data) {
+        $.get("{% url 'api-folders:move-node' %}", { 'id' : data.node.id, 'parent' : data.parent })
+            .done(function (d) {
+                //data.instance.load_node(data.parent);
+                data.instance.refresh();
+            })
+            .fail(function () {
+                data.instance.refresh();
+            });
+    })
+    .on('changed.jstree', function (e, data) {
+        if(data && data.selected && data.selected.length) {
+            $.get("{% url 'api-folders:get-content' %}" + '?id=' + data.selected.join(':'), 
+                function (d) {
+                    apply_details(d);
+                }
+            );
+        }
+        else {
+            $('#data .content').hide();
+            $('#data .default').html('Select a file from the tree.').show();
+        }
+    });
+
+    $('#connect-btn').click(function(e){
+        console.log('connect' + current_selected_asset);
+    });
+
+    function apply_details(data){
+        current_selected_asset = data.id;
+        $('#ip').text(data.ip);
+        $('#public-ip').text(data.public_ip);
+        $('#os').text(data.os);
+        $('#os-arch').text(data.os_arch);
+    }
+});
+</script>
+{% endblock %}

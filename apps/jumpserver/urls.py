@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^audits/', include('audits.urls.views_urls', namespace='audits')),
     url(r'^applications/', include('applications.urls.views_urls', namespace='applications')),
     url(r'^ops/', include('ops.urls.view_urls', namespace='ops')),
+    url(r'^folders/', include('folders.urls.views_urls', namespace='folders')),
 
     # Api url view map
     url(r'^api/users/', include('users.urls.api_urls', namespace='api-users')),
@@ -41,6 +42,7 @@ urlpatterns = [
     url(r'^api/applications/', include('applications.urls.api_urls', namespace='api-applications')),
     url(r'^api/ops/', include('ops.urls.api_urls', namespace='api-ops')),
     url(r'^api/shell/', include('shell.urls.api_urls', namespace='api-shell')),
+    url(r'^api/folders/', include('folders.urls.api_urls', namespace='api-folders')),
 
 ]
 

@@ -51,6 +51,7 @@ ALLOWED_HOSTS = CONFIG.ALLOWED_HOSTS or []
 # Application definition
 
 INSTALLED_APPS = [
+    'folders.apps.FoldersConfig',
     'users.apps.UsersConfig',
     'assets.apps.AssetsConfig',
     'perms.apps.PermsConfig',

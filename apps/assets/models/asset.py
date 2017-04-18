@@ -9,6 +9,7 @@ import logging
 from django.utils.translation import ugettext_lazy as _
 
 from . import IDC, AssetGroup, AdminUser, SystemUser
+from folders.models import Folder
 
 __all__ = ['Asset']
 logger = logging.getLogger(__name__)
@@ -88,6 +89,7 @@ class Asset(models.Model):
     created_by = models.CharField(max_length=32, null=True, blank=True, verbose_name=_('Created by'))
     date_created = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=_('Date created'))
     comment = models.TextField(max_length=128, default='', blank=True, verbose_name=_('Comment'))
+    folder = models.ManyToManyField(Folder, verbose_name=_('Parent folder'), blank=True)
 
     def __unicode__(self):
         return '%s <%s: %s>' % (self.hostname, self.ip, self.port)

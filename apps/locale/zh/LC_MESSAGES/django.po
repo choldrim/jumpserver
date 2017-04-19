@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jumpserver 0.3.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-13 16:12+0800\n"
+"POT-Creation-Date: 2017-06-14 10:54+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ibuler <ibuler@qq.com>\n"
 "Language-Team: Jumpserver team<ibuler@qq.com>\n"
@@ -67,7 +67,7 @@ msgstr "登录地址"
 
 #: applications/models.py:22
 #: applications/templates/applications/terminal_detail.html:63
-#: assets/models/asset.py:90 assets/models/group.py:22 assets/models/idc.py:35
+#: assets/models/asset.py:91 assets/models/group.py:22 assets/models/idc.py:35
 #: assets/models/user.py:46 assets/models/user.py:156
 #: assets/templates/assets/admin_user_detail.html:68
 #: assets/templates/assets/admin_user_list.html:18
@@ -91,7 +91,7 @@ msgid "Terminal detail"
 msgstr "终端详情"
 
 #: applications/templates/applications/terminal_detail.html:59
-#: assets/models/asset.py:89 assets/models/group.py:21 assets/models/idc.py:30
+#: assets/models/asset.py:90 assets/models/group.py:21 assets/models/idc.py:30
 #: assets/templates/assets/admin_user_detail.html:60
 #: assets/templates/assets/idc_detail.html:89
 #: assets/templates/assets/system_user_detail.html:90 perms/models.py:39
@@ -101,7 +101,7 @@ msgid "Date created"
 msgstr "创建日期"
 
 #: applications/templates/applications/terminal_list.html:30
-#: assets/models/asset.py:41 assets/templates/assets/admin_user_detail.html:98
+#: assets/models/asset.py:42 assets/templates/assets/admin_user_detail.html:98
 #: assets/templates/assets/asset_detail.html:60
 #: assets/templates/assets/asset_group_detail.html:46
 #: assets/templates/assets/asset_list.html:38
@@ -188,6 +188,7 @@ msgstr "更新"
 #: assets/templates/assets/idc_list.html:56
 #: assets/templates/assets/system_user_asset.html:257
 #: assets/templates/assets/system_user_list.html:59
+#: folders/templates/folders/folder_list.html:76
 #: ops/templates/ops/task_list.html:72
 #: perms/templates/perms/asset_permission_list.html:47
 #: users/templates/users/user_group_list.html:52
@@ -204,6 +205,7 @@ msgid "Reject"
 msgstr "拒绝"
 
 #: applications/templates/applications/terminal_list.html:81
+#: folders/templates/folders/folder_list.html:41
 msgid "Connect"
 msgstr "连接"
 
@@ -339,7 +341,7 @@ msgstr "选择管理用户"
 msgid "Select assets"
 msgstr "选择资产"
 
-#: assets/forms.py:82 assets/models/asset.py:43
+#: assets/forms.py:82 assets/models/asset.py:44
 #: assets/templates/assets/admin_user_detail.html:99
 #: assets/templates/assets/asset_detail.html:68
 #: assets/templates/assets/asset_group_detail.html:47
@@ -361,6 +363,7 @@ msgstr "端口"
 #: audits/templates/audits/proxy_log_offline_list.html:65
 #: audits/templates/audits/proxy_log_online_list.html:34
 #: audits/templates/audits/proxy_log_online_list.html:65
+#: folders/templates/folders/folder_list.html:92
 #: ops/templates/ops/task_list.html:40
 #: perms/templates/perms/asset_permission_create_update.html:40
 #: perms/templates/perms/asset_permission_list.html:14 templates/_nav.html:21
@@ -406,39 +409,39 @@ msgstr "密钥不能为空"
 msgid "Password required"
 msgstr "密码不能为空"
 
-#: assets/models/asset.py:23
+#: assets/models/asset.py:24
 msgid "In use"
 msgstr "使用中"
 
-#: assets/models/asset.py:24
+#: assets/models/asset.py:25
 msgid "Out of use"
 msgstr "未使用"
 
-#: assets/models/asset.py:27
+#: assets/models/asset.py:28
 msgid "Server"
 msgstr "物理机"
 
-#: assets/models/asset.py:28
+#: assets/models/asset.py:29
 msgid "VM"
 msgstr "虚拟机"
 
-#: assets/models/asset.py:29
+#: assets/models/asset.py:30
 msgid "Switch"
 msgstr "交换机"
 
-#: assets/models/asset.py:30
+#: assets/models/asset.py:31
 msgid "Router"
 msgstr "路由器"
 
-#: assets/models/asset.py:31
+#: assets/models/asset.py:32
 msgid "Firewall"
 msgstr "防火墙"
 
-#: assets/models/asset.py:32
+#: assets/models/asset.py:33
 msgid "Storage"
 msgstr "存储"
 
-#: assets/models/asset.py:42 assets/templates/assets/admin_user_detail.html:97
+#: assets/models/asset.py:43 assets/templates/assets/admin_user_detail.html:97
 #: assets/templates/assets/asset_detail.html:56
 #: assets/templates/assets/asset_group_detail.html:45
 #: assets/templates/assets/asset_list.html:37
@@ -451,118 +454,119 @@ msgstr "存储"
 msgid "Hostname"
 msgstr "主机名"
 
-#: assets/models/asset.py:45 assets/templates/assets/asset_detail.html:210
+#: assets/models/asset.py:46 assets/templates/assets/asset_detail.html:210
 #: assets/views/asset.py:221 assets/views/asset.py:260
 msgid "Asset groups"
 msgstr "资产组"
 
-#: assets/models/asset.py:47 assets/templates/assets/asset_detail.html:72
+#: assets/models/asset.py:48 assets/templates/assets/asset_detail.html:72
 #: templates/_nav.html:24
 msgid "Admin user"
 msgstr "管理用户"
 
-#: assets/models/asset.py:50
+#: assets/models/asset.py:51
 msgid "System User"
 msgstr "系统用户"
 
-#: assets/models/asset.py:52 assets/templates/assets/asset_detail.html:84
+#: assets/models/asset.py:53 assets/templates/assets/asset_detail.html:84
 #: templates/_nav.html:23
 msgid "IDC"
 msgstr "机房"
 
-#: assets/models/asset.py:53 assets/templates/assets/asset_detail.html:128
+#: assets/models/asset.py:54 assets/templates/assets/asset_detail.html:128
 msgid "Is active"
 msgstr "激活"
 
-#: assets/models/asset.py:55 assets/templates/assets/asset_detail.html:132
+#: assets/models/asset.py:56 assets/templates/assets/asset_detail.html:132
 msgid "Asset type"
 msgstr "系统类型"
 
-#: assets/models/asset.py:57 assets/templates/assets/asset_detail.html:136
+#: assets/models/asset.py:58 assets/templates/assets/asset_detail.html:136
 msgid "Asset environment"
 msgstr "资产环境"
 
-#: assets/models/asset.py:59 assets/templates/assets/asset_detail.html:124
+#: assets/models/asset.py:60 assets/templates/assets/asset_detail.html:124
 msgid "Asset status"
 msgstr "资产状态"
 
-#: assets/models/asset.py:63 assets/templates/assets/asset_detail.html:64
+#: assets/models/asset.py:64 assets/templates/assets/asset_detail.html:64
+#: folders/templates/folders/folder_list.html:26
 msgid "Public IP"
 msgstr "公网IP"
 
-#: assets/models/asset.py:65
+#: assets/models/asset.py:66
 msgid "Remote control card IP"
 msgstr "远控卡IP"
 
-#: assets/models/asset.py:66 assets/templates/assets/asset_detail.html:88
+#: assets/models/asset.py:67 assets/templates/assets/asset_detail.html:88
 msgid "Cabinet number"
 msgstr "机柜编号"
 
-#: assets/models/asset.py:67 assets/templates/assets/asset_detail.html:92
+#: assets/models/asset.py:68 assets/templates/assets/asset_detail.html:92
 msgid "Cabinet position"
 msgstr "机柜层号"
 
-#: assets/models/asset.py:68 assets/templates/assets/asset_detail.html:144
+#: assets/models/asset.py:69 assets/templates/assets/asset_detail.html:144
 msgid "Asset number"
 msgstr "资产编号"
 
-#: assets/models/asset.py:71 assets/templates/assets/asset_detail.html:96
+#: assets/models/asset.py:72 assets/templates/assets/asset_detail.html:96
 msgid "Vendor"
 msgstr "制造商"
 
-#: assets/models/asset.py:72 assets/templates/assets/asset_detail.html:100
+#: assets/models/asset.py:73 assets/templates/assets/asset_detail.html:100
 msgid "Model"
 msgstr "型号"
 
-#: assets/models/asset.py:73 assets/templates/assets/asset_detail.html:140
+#: assets/models/asset.py:74 assets/templates/assets/asset_detail.html:140
 msgid "Serial number"
 msgstr "序列号"
 
-#: assets/models/asset.py:75
+#: assets/models/asset.py:76
 msgid "CPU model"
 msgstr "CPU型号"
 
-#: assets/models/asset.py:76
+#: assets/models/asset.py:77
 msgid "CPU count"
 msgstr "CPU数量"
 
-#: assets/models/asset.py:77
+#: assets/models/asset.py:78
 msgid "CPU cores"
 msgstr "CPU核数"
 
-#: assets/models/asset.py:78 assets/templates/assets/asset_detail.html:108
+#: assets/models/asset.py:79 assets/templates/assets/asset_detail.html:108
 msgid "Memory"
 msgstr "内存"
 
-#: assets/models/asset.py:79
+#: assets/models/asset.py:80
 msgid "Disk total"
 msgstr "硬盘大小"
 
-#: assets/models/asset.py:80
+#: assets/models/asset.py:81
 msgid "Disk info"
 msgstr "硬盘信息"
 
-#: assets/models/asset.py:82 assets/templates/assets/asset_detail.html:116
+#: assets/models/asset.py:83 assets/templates/assets/asset_detail.html:116
 msgid "Platform"
 msgstr "系统平台"
 
-#: assets/models/asset.py:83 assets/templates/assets/asset_detail.html:120
+#: assets/models/asset.py:84 assets/templates/assets/asset_detail.html:120
 msgid "OS"
 msgstr "操作系统"
 
-#: assets/models/asset.py:84
+#: assets/models/asset.py:85
 msgid "OS version"
 msgstr "系统版本"
 
-#: assets/models/asset.py:85
+#: assets/models/asset.py:86
 msgid "OS arch"
 msgstr "系统架构"
 
-#: assets/models/asset.py:86
+#: assets/models/asset.py:87
 msgid "Hostname raw"
 msgstr "主机名原始"
 
-#: assets/models/asset.py:88 assets/models/group.py:20 assets/models/idc.py:34
+#: assets/models/asset.py:89 assets/models/group.py:20 assets/models/idc.py:34
 #: assets/models/user.py:49 assets/models/user.py:154
 #: assets/templates/assets/admin_user_detail.html:64
 #: assets/templates/assets/asset_detail.html:148
@@ -572,6 +576,10 @@ msgstr "主机名原始"
 #: users/models/user.py:47 users/templates/users/user_detail.html:101
 msgid "Created by"
 msgstr "创建者"
+
+#: assets/models/asset.py:92 folders/models/folder.py:13
+msgid "Parent folder"
+msgstr "父级目录"
 
 #: assets/models/group.py:33 assets/models/idc.py:43
 msgid "Default"
@@ -1400,6 +1408,34 @@ msgstr ""
 msgid "discard time"
 msgstr ""
 
+#: folders/models/folder.py:11
+msgid "Folder name"
+msgstr "目录名"
+
+#: folders/models/folder.py:19 folders/templates/folders/folder_list.html:82
+msgid "Folder"
+msgstr "目录"
+
+#: folders/templates/folders/folder_list.html:22
+msgid "Internal IP"
+msgstr "内网IP"
+
+#: folders/templates/folders/folder_list.html:32
+msgid "Os type"
+msgstr "系统类型"
+
+#: folders/templates/folders/folder_list.html:36
+msgid "Os arch"
+msgstr "系统架构"
+
+#: folders/templates/folders/folder_list.html:77
+msgid "Rename"
+msgstr "重命名"
+
+#: folders/templates/folders/folder_list.html:78
+msgid "New"
+msgstr "新建"
+
 #: ops/models.py:19 ops/templates/ops/task_detail.html:46
 msgid "UUID"
 msgstr "UUID"
@@ -1615,6 +1651,10 @@ msgstr "资产授权包含用户"
 msgid "Asset permission asset list"
 msgstr "资产组授权包含资产"
 
+#: shell/api.py:90
+msgid "Params not correct"
+msgstr "参数不正确"
+
 #: templates/_base_list.html:44 templates/_header_bar.html:8
 msgid "Search"
 msgstr "搜索"
@@ -1680,7 +1720,15 @@ msgstr "命令记录"
 msgid "Login log"
 msgstr "登录日志"
 
-#: templates/_nav.html:92
+#: templates/_nav.html:78
+msgid "Folders"
+msgstr "目录"
+
+#: templates/_nav.html:81
+msgid "All folders"
+msgstr "所有目录"
+
+#: templates/_nav.html:102
 msgid "Visit us"
 msgstr "访问官网"
 

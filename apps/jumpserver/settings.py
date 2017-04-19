@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'django_filters',
     'bootstrap3',
     'captcha',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

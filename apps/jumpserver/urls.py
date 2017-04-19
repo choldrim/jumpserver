@@ -1,6 +1,7 @@
 # ~*~ coding: utf-8 ~*~
 from __future__ import unicode_literals
 
+from django.contrib import admin
 from django.conf.urls import url, include
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,6 +30,7 @@ urlpatterns = [
     url(r'^api/applications/', include('applications.urls.api_urls', namespace='api-applications')),
     url(r'^api/ops/', include('ops.urls.api_urls', namespace='api-ops')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^api/shell/', include('shell.urls.api_urls', namespace='api-shell')),
     url(r'^api/folders/', include('folders.urls.api_urls', namespace='api-folders')),
     url(r'^api/extension/', include('extension.urls.api_urls', namespace='api-extension')),

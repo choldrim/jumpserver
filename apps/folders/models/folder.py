@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 
@@ -12,9 +11,12 @@ class Folder(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True,
         null=True, verbose_name=_('Parent folder'),)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
+
+    __str__ = __unicode__
 
     class Meta:
         verbose_name = _('Folder')
+        verbose_name_plural = _('Folders')
 

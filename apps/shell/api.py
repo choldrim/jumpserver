@@ -1,9 +1,12 @@
 # coding=utf-8
 import os
+import base64
+import json
 
 from django.conf import settings
 from django.template import Context, Template
 from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext as _
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -72,4 +75,33 @@ class SessionFile(APIView):
 
         ret['err'] = False
         ret['result'] = session_data
+        return Response(ret)
+
+
+class URLSchema(APIView):
+    permission_classes = (IsValidUser,)
+
+    def get(self, request):
+        asset_id = request.query_params.get('asset_id')
+        asset_id = int(asset_id)
+        shell_type = request.query_params.get('shell_type')
+        if None in [asset_id, shell_type]:
+            ret = {
+                'message': _('Params not correct')
+            }
+            return Response(ret, status=400)
+
+        d = {
+            'token': generate_token(request, request.user),
+            'asset_id': asset_id,
+            'shell_type': shell_type,
+        }
+        logger.debug('get url-schema with object: %s' % json.dumps(d))
+        s = json.dumps(d)
+        binary = base64.b64encode(s.encode())
+        url = binary.decode()
+        logger.debug('url-schema url: %s' % url)
+        ret = {
+            'url': url
+        }
         return Response(ret)

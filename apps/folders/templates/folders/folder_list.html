@@ -73,11 +73,11 @@ $(document).ready(function () {
                 var tmp = $.jstree.defaults.contextmenu.items();
                 delete tmp.create.action;
                 delete tmp.ccp;
-                tmp.create.label = "New";
+                tmp.create.label = '{% trans "New" %}';
                 tmp.create.submenu = {
                     "create_folder" : {
                         "separator_after"    : true,
-                        "label"                : "Folder",
+                        "label"                : '{% trans "Folder" %}',
                         "action"            : function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
@@ -87,7 +87,7 @@ $(document).ready(function () {
                         }
                     },
                     "create_file" : {
-                        "label"                : "File",
+                      "label"                : '{% trans "Asset" %}',
                         "action"            : function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
@@ -137,20 +137,22 @@ $(document).ready(function () {
     .on('move_node.jstree', function (e, data) {
         $.get("{% url 'api-folders:move-node' %}", { 'id' : data.node.id, 'parent' : data.parent })
             .done(function (d) {
-                //data.instance.load_node(data.parent);
                 data.instance.refresh();
             })
             .fail(function () {
                 data.instance.refresh();
             });
     })
-    .on('changed.jstree', function (e, data) {
-        if(data && data.selected && data.selected.length) {
-            $.get("{% url 'api-folders:get-content' %}" + '?id=' + data.selected.join(':'), 
-                function (d) {
-                    apply_details(d);
-                }
-            );
+    .on('changed.jstree', function (e, d) {
+        if(d && d.selected && d.selected.length) {
+            $.get("{% url 'api-folders:get-content' %}" + '?id=' + d.selected.join(':'))
+                .done(function (data) {
+                    apply_details(data);
+                })
+                .fail(function (data) {
+                    console.error(data)
+                    data.instance.refresh();
+                });
         }
         else {
             $('#data .content').hide();
@@ -159,15 +161,26 @@ $(document).ready(function () {
     });
 
     $('#connect-btn').click(function(e){
-        console.log('connect' + current_selected_asset);
+        $.get("{% url 'api-shell:url-schema' %}", {'asset_id': current_selected_asset, 'shell_type': 'XShell'})
+            .done(function (data) {
+                var url = data.url;
+                console.log('open url: ' + url);
+                window.open('Jumpserver://' + url, '_self');
+            })
+            .fail(function (data) {
+                console.error(data)
+                data.instance.refresh();
+            });
     });
 
     function apply_details(data){
-        current_selected_asset = data.id;
-        $('#ip').text(data.ip);
-        $('#public-ip').text(data.public_ip);
-        $('#os').text(data.os);
-        $('#os-arch').text(data.os_arch);
+        if(data.id){
+            current_selected_asset = data.id;
+            $('#ip').text(data.ip);
+            $('#public-ip').text(data.public_ip);
+            $('#os').text(data.os);
+            $('#os-arch').text(data.os_arch);
+        }
     }
 });
 </script>

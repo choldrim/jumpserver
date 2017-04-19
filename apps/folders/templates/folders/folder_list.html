@@ -73,6 +73,8 @@ $(document).ready(function () {
                 var tmp = $.jstree.defaults.contextmenu.items();
                 delete tmp.create.action;
                 delete tmp.ccp;
+                tmp.remove.label = '{% trans "Delete" %}';
+                tmp.rename.label = '{% trans "Rename" %}';
                 tmp.create.label = '{% trans "New" %}';
                 tmp.create.submenu = {
                     "create_folder" : {

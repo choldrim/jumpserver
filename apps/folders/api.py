@@ -55,7 +55,6 @@ class GetNode(APIView):
         return nodes
 
     def get(self, request, *args, **kwargs):
-        print(request.query_params)
         '''
         nodes = [
             {

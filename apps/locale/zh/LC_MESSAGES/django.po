@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jumpserver 0.3.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-14 10:54+0800\n"
+"POT-Creation-Date: 2017-06-14 11:10+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: ibuler <ibuler@qq.com>\n"
 "Language-Team: Jumpserver team<ibuler@qq.com>\n"
@@ -170,7 +170,7 @@ msgstr "动作"
 #: assets/templates/assets/asset_group_detail.html:151
 #: assets/templates/assets/asset_group_detail.html:256
 #: assets/templates/assets/asset_group_list.html:55
-#: assets/templates/assets/asset_list.html:117
+#: assets/templates/assets/asset_list.html:116
 #: assets/templates/assets/idc_list.html:55
 #: assets/templates/assets/system_user_asset.html:256
 #: assets/templates/assets/system_user_list.html:58
@@ -184,7 +184,7 @@ msgstr "更新"
 #: assets/templates/assets/admin_user_list.html:44
 #: assets/templates/assets/asset_group_detail.html:150
 #: assets/templates/assets/asset_group_list.html:56
-#: assets/templates/assets/asset_list.html:118
+#: assets/templates/assets/asset_list.html:117
 #: assets/templates/assets/idc_list.html:56
 #: assets/templates/assets/system_user_asset.html:257
 #: assets/templates/assets/system_user_list.html:59
@@ -278,7 +278,6 @@ msgstr "提交"
 #: applications/views.py:24 audits/models.py:47
 #: audits/templates/audits/proxy_log_offline_list.html:67
 #: audits/templates/audits/proxy_log_online_list.html:67 templates/_nav.html:42
-#: templates/_nav_user.html:14
 msgid "Terminal"
 msgstr "终端"
 
@@ -577,9 +576,9 @@ msgstr "主机名原始"
 msgid "Created by"
 msgstr "创建者"
 
-#: assets/models/asset.py:92 folders/models/folder.py:13
+#: assets/models/asset.py:92 folders/models/folder.py:12
 msgid "Parent folder"
-msgstr "父级目录"
+msgstr "父级项目"
 
 #: assets/models/group.py:33 assets/models/idc.py:43
 msgid "Default"
@@ -898,7 +897,7 @@ msgstr "添加到资产组"
 #: assets/templates/assets/asset_detail.html:227
 #: assets/templates/assets/asset_detail.html:263
 #: assets/templates/assets/asset_group_list.html:100
-#: assets/templates/assets/asset_list.html:218
+#: assets/templates/assets/asset_list.html:217
 #: assets/templates/assets/idc_assets.html:101
 #: assets/templates/assets/idc_assets.html:263
 #: assets/templates/assets/idc_list.html:99
@@ -974,7 +973,7 @@ msgid "Update selected"
 msgstr "批量更新"
 
 #: assets/templates/assets/asset_group_list.html:95
-#: assets/templates/assets/asset_list.html:213
+#: assets/templates/assets/asset_list.html:212
 #: assets/templates/assets/idc_assets.html:258
 #: assets/templates/assets/idc_list.html:94
 #: assets/templates/assets/system_user_list.html:97
@@ -1051,7 +1050,7 @@ msgstr "可用"
 msgid "Deactive selected"
 msgstr "禁用所选"
 
-#: assets/templates/assets/asset_list.html:214
+#: assets/templates/assets/asset_list.html:213
 #: assets/templates/assets/idc_assets.html:259
 #: assets/templates/assets/user_asset_list.html:161
 msgid "This will delete the selected assets !!!"
@@ -1059,14 +1058,14 @@ msgstr "删除选择资产"
 
 # msgid "Deleted!"
 # msgstr "删除"
-#: assets/templates/assets/asset_list.html:222
+#: assets/templates/assets/asset_list.html:221
 #: assets/templates/assets/idc_assets.html:267
 #: assets/templates/assets/user_asset_list.html:169
 msgid "Asset Deleted."
 msgstr "已被删除"
 
-#: assets/templates/assets/asset_list.html:223
-#: assets/templates/assets/asset_list.html:228
+#: assets/templates/assets/asset_list.html:222
+#: assets/templates/assets/asset_list.html:227
 #: assets/templates/assets/idc_assets.html:268
 #: assets/templates/assets/idc_assets.html:273
 #: assets/templates/assets/user_asset_list.html:170
@@ -1074,7 +1073,7 @@ msgstr "已被删除"
 msgid "Asset Delete"
 msgstr "删除"
 
-#: assets/templates/assets/asset_list.html:227
+#: assets/templates/assets/asset_list.html:226
 #: assets/templates/assets/idc_assets.html:272
 #: assets/templates/assets/user_asset_list.html:174
 msgid "Asset Deleting failed."
@@ -1408,13 +1407,18 @@ msgstr ""
 msgid "discard time"
 msgstr ""
 
-#: folders/models/folder.py:11
+#: folders/models/folder.py:10
 msgid "Folder name"
-msgstr "目录名"
+msgstr "项目名"
 
-#: folders/models/folder.py:19 folders/templates/folders/folder_list.html:82
+#: folders/models/folder.py:20 folders/templates/folders/folder_list.html:82
 msgid "Folder"
-msgstr "目录"
+msgstr "项目"
+
+#: folders/models/folder.py:21 templates/_nav.html:79
+#: templates/_nav_user.html:21
+msgid "Folders"
+msgstr "项目"
 
 #: folders/templates/folders/folder_list.html:22
 msgid "Internal IP"
@@ -1612,8 +1616,8 @@ msgstr "添加用户"
 msgid "Add user group to asset permission"
 msgstr "添加用户组"
 
-#: perms/views.py:33 perms/views.py:76 perms/views.py:112 perms/views.py:140
-#: perms/views.py:184 perms/views.py:226 templates/_nav.html:29
+#: perms/views.py:33 perms/views.py:76 perms/views.py:113 perms/views.py:141
+#: perms/views.py:185 perms/views.py:227 templates/_nav.html:29
 msgid "Perms"
 msgstr "权限管理"
 
@@ -1630,24 +1634,24 @@ msgstr "创建权限规则"
 msgid "Create asset permission <a href=\"{url}\"> {name} </a> successfully."
 msgstr "创建授权 <a href=\"{url}\"> {name} </a>  成功"
 
-#: perms/views.py:106
+#: perms/views.py:107
 #, python-brace-format
 msgid "Update asset permission <a href=\"{url}\"> {name} </a> successfully."
 msgstr "更新授权 <a href=\"{url}\"> {name} </a>  成功"
 
-#: perms/views.py:113
+#: perms/views.py:114
 msgid "Update asset permission"
 msgstr "更新资产授权"
 
-#: perms/views.py:141
+#: perms/views.py:142
 msgid "Asset permission detail"
 msgstr "资产授权详情"
 
-#: perms/views.py:185
+#: perms/views.py:186
 msgid "Asset permission user list"
 msgstr "资产授权包含用户"
 
-#: perms/views.py:227
+#: perms/views.py:228
 msgid "Asset permission asset list"
 msgstr "资产组授权包含资产"
 
@@ -1719,18 +1723,6 @@ msgstr "命令记录"
 #: templates/_nav.html:68
 msgid "Login log"
 msgstr "登录日志"
-
-#: templates/_nav.html:78
-msgid "Folders"
-msgstr "目录"
-
-#: templates/_nav.html:81
-msgid "All folders"
-msgstr "所有目录"
-
-#: templates/_nav.html:102
-msgid "Visit us"
-msgstr "访问官网"
 
 #: templates/_nav_user.html:4
 msgid "My assets"
@@ -2397,6 +2389,12 @@ msgstr "创建用户 <a href=\"{url}\">{name}</a> 成功"
 #: users/views/user.py:228
 msgid "Invalid file."
 msgstr "文件错误"
+
+#~ msgid "All folders"
+#~ msgstr "所有项目"
+
+#~ msgid "Visit us"
+#~ msgstr "访问官网"
 
 #~ msgid "Update Asset"
 #~ msgstr "更新资产"

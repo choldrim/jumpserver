@@ -348,3 +348,9 @@ BOOTSTRAP3 = {
 # default coco server for shell program
 SHELL_SERVER = CONFIG.SHELL_SERVER
 SHELL_PORT = CONFIG.SHELL_PORT
+
+# custom authentication backends
+AUTHENTICATION_BACKENDS = ['users.zhenai_auth.OAAuth']
+
+# OA API
+OA_API_URL = CONFIG.OA_API_URL or ''

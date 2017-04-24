@@ -97,6 +97,9 @@ class Config:
     SHELL_SERVER = ''
     SHELL_PORT = 2222
 
+    OA_API_URL = ''
+
+
     def __init__(self):
         pass
 

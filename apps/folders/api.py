@@ -3,17 +3,26 @@
 from rest_framework import viewsets, generics, mixins
 from rest_framework.views import APIView, Response
 
-from users.permissions import IsValidUser, IsSuperUser
-from assets.models import Asset
 from .models import Folder
+from assets.models import Asset
+from perms.utils import get_user_granted_assets
+from users.permissions import IsValidUser, IsSuperUser
 
 class GetNode(APIView):
     permission_classes = (IsValidUser,)
 
+    def get_granted_assets(self):
+        queryset = get_user_granted_assets(self.request.user)
+        return queryset
+
     def get_assets(self, parent):
         l = []
         assets = parent.asset_set.all()
+        granted_assets = self.get_granted_assets()
         for asset in assets:
+            if not self.request.user.is_superuser and asset not in granted_assets:
+                continue
+
             d = {
                 'id': '%d_%d' %(parent.id, asset.id),
                 'text': asset.hostname,
@@ -27,12 +36,15 @@ class GetNode(APIView):
         l = []
         nodes = parent.folder_set.all()
         for node in nodes:
+            children = self.get_children(node) + self.get_assets(node)
+            if len(children) == 0:
+                continue
+
             d = {
                 'id': str(node.id),
                 'text': node.name,
+                'children': children
             }
-            d['children'] = self.get_children(node)
-            d['children'] += self.get_assets(node)
             l.append(d)
         return l
 
@@ -41,11 +53,15 @@ class GetNode(APIView):
         nodes = Folder.objects.all()
         root_nodes = [node for node in nodes if not node.parent]
         for node in root_nodes:
+            children = self.get_children(node) + self.get_assets(node)
+            if not self.request.user.is_superuser and len(children) == 0:
+                continue
+
             d = {
                 'id': str(node.id),
                 'text': node.name,
+                'children': children
             }
-            d['children'] = self.get_children(node)
             l.append(d)
 
         return l

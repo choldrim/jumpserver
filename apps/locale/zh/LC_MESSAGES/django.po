@@ -188,7 +188,7 @@ msgstr "更新"
 #: assets/templates/assets/idc_list.html:56
 #: assets/templates/assets/system_user_asset.html:257
 #: assets/templates/assets/system_user_list.html:59
-#: folders/templates/folders/folder_list.html:76
+#: folders/templates/folders/folder_list.html:88
 #: ops/templates/ops/task_list.html:72
 #: perms/templates/perms/asset_permission_list.html:47
 #: users/templates/users/user_group_list.html:52
@@ -205,7 +205,7 @@ msgid "Reject"
 msgstr "拒绝"
 
 #: applications/templates/applications/terminal_list.html:81
-#: folders/templates/folders/folder_list.html:41
+#: folders/templates/folders/folder_list.html:42
 msgid "Connect"
 msgstr "连接"
 
@@ -362,7 +362,7 @@ msgstr "端口"
 #: audits/templates/audits/proxy_log_offline_list.html:65
 #: audits/templates/audits/proxy_log_online_list.html:34
 #: audits/templates/audits/proxy_log_online_list.html:65
-#: folders/templates/folders/folder_list.html:92
+#: folders/templates/folders/folder_list.html:104
 #: ops/templates/ops/task_list.html:40
 #: perms/templates/perms/asset_permission_create_update.html:40
 #: perms/templates/perms/asset_permission_list.html:14 templates/_nav.html:21
@@ -489,7 +489,7 @@ msgid "Asset status"
 msgstr "资产状态"
 
 #: assets/models/asset.py:64 assets/templates/assets/asset_detail.html:64
-#: folders/templates/folders/folder_list.html:26
+#: folders/templates/folders/folder_list.html:27
 msgid "Public IP"
 msgstr "公网IP"
 
@@ -1411,7 +1411,7 @@ msgstr ""
 msgid "Folder name"
 msgstr "项目名"
 
-#: folders/models/folder.py:20 folders/templates/folders/folder_list.html:82
+#: folders/models/folder.py:20 folders/templates/folders/folder_list.html:94
 msgid "Folder"
 msgstr "项目"
 
@@ -1420,23 +1420,27 @@ msgstr "项目"
 msgid "Folders"
 msgstr "项目"
 
-#: folders/templates/folders/folder_list.html:22
+#: folders/templates/folders/folder_list.html:23
 msgid "Internal IP"
 msgstr "内网IP"
 
-#: folders/templates/folders/folder_list.html:32
+#: folders/templates/folders/folder_list.html:33
 msgid "Os type"
 msgstr "系统类型"
 
-#: folders/templates/folders/folder_list.html:36
+#: folders/templates/folders/folder_list.html:37
 msgid "Os arch"
 msgstr "系统架构"
 
-#: folders/templates/folders/folder_list.html:77
+#: folders/templates/folders/folder_list.html:62
+msgid "no visible project"
+msgstr "无可见项目"
+
+#: folders/templates/folders/folder_list.html:89
 msgid "Rename"
 msgstr "重命名"
 
-#: folders/templates/folders/folder_list.html:78
+#: folders/templates/folders/folder_list.html:90
 msgid "New"
 msgstr "新建"
 
@@ -1983,7 +1987,7 @@ msgstr "验证码错误"
 #: users/templates/users/reset_password.html:45
 #: users/templates/users/user_detail.html:159
 #: users/templates/users/user_detail.html:327
-#: users/templates/users/user_profile.html:136 users/utils.py:71
+#: users/templates/users/user_profile.html:136 users/utils.py:72
 msgid "Reset password"
 msgstr "重置密码"
 
@@ -2198,11 +2202,11 @@ msgstr "更新密钥"
 msgid "Update user"
 msgstr "编辑用户"
 
-#: users/utils.py:40
+#: users/utils.py:41
 msgid "Create account successfully"
 msgstr "创建账户成功"
 
-#: users/utils.py:42
+#: users/utils.py:43
 #, python-format
 msgid ""
 "\n"
@@ -2243,7 +2247,7 @@ msgstr ""
 "    </br>\n"
 "    "
 
-#: users/utils.py:73
+#: users/utils.py:74
 #, python-format
 msgid ""
 "\n"
@@ -2287,11 +2291,11 @@ msgstr ""
 "    </br>\n"
 "    "
 
-#: users/utils.py:104
+#: users/utils.py:105
 msgid "SSH Key Reset"
 msgstr "重置ssh密钥"
 
-#: users/utils.py:106
+#: users/utils.py:107
 #, python-format
 msgid ""
 "\n"
@@ -2316,15 +2320,15 @@ msgstr ""
 "    </br>\n"
 "    "
 
-#: users/utils.py:139
+#: users/utils.py:140
 msgid "User not exist"
 msgstr "用户不存在"
 
-#: users/utils.py:141
+#: users/utils.py:142
 msgid "Disabled or expired"
 msgstr "禁用或失效"
 
-#: users/utils.py:154
+#: users/utils.py:164
 msgid "Password or SSH public key invalid"
 msgstr "密码或秘钥不合法"
 

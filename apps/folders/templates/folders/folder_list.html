@@ -5,6 +5,15 @@
   <link href="{% static "css/plugins/jstree/style.min.css" %}" rel="stylesheet">
 
 <style type="text/css">
+#folder-tree {
+  display: none;
+}
+#error {
+  display: none;
+}
+#details {
+  display: none;
+}
 </style>
 
 {% endblock %}
@@ -15,7 +24,8 @@
 
 {% block table_container %}
 <div id="folder-tree" class="col-sm-6"></div>
-<div class="details col-sm-6">
+<div id="error" class="col-sm-6"></div>
+<div id="details" class="details col-sm-6">
   <div class="host-detail">
     <div class="host-detail-line">
       <div class="host-detail-item">
@@ -54,8 +64,20 @@ $(document).ready(function () {
     $('#folder-tree').jstree({
         'core': {
             'data': { 
-              'url': "{% url 'api-folders:get-node' %}",
-                'dataType': 'json'
+                'url': "{% url 'api-folders:get-node' %}",
+                'dataType': 'json',
+                'success': function(node){
+                    if(node.length === 0){
+                      $('#error').html('{% trans "no visible project" %}');
+                        $('#folder-tree').hide();
+                        $('#error').show();
+                        $('#details').hide();
+                    } else {
+                        $('#folder-tree').show();
+                        $('#error').hide();
+                        $('#details').show();
+                    }
+                }
             },
             'check_callback' : function(o, n, p, i, m) {
                 if(m && m.dnd && m.pos !== 'i') { return false; }
@@ -78,9 +100,9 @@ $(document).ready(function () {
                 tmp.create.label = '{% trans "New" %}';
                 tmp.create.submenu = {
                     "create_folder" : {
-                        "separator_after"    : true,
-                        "label"                : '{% trans "Folder" %}',
-                        "action"            : function (data) {
+                        "separator_after": true,
+                        "label": '{% trans "Folder" %}',
+                        "action": function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
                             inst.create_node(obj, { type : "default" }, "last", function (new_node) {

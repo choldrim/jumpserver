@@ -132,7 +132,15 @@ $(document).ready(function () {
                 return name + ' ' + counter;
             }
         },
-        'plugins' : ['state','dnd','sort','types','contextmenu','unique']
+        'plugins' : [
+            'state',
+            'dnd',
+            'sort',
+            'types',
+            {% if user.role == 'Admin' %}
+            'contextmenu',
+            {% endif %}
+            'unique']
     })
     .on('delete_node.jstree', function (e, data) {
         $.get("{% url 'api-folders:delete-node' %}", { 'id' : data.node.id })

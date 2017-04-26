@@ -15,6 +15,7 @@ from django.core.cache import cache
 from common.tasks import send_mail_async
 from common.utils import reverse, get_object_or_none
 from .models import User
+from users.zhenai_auth import OAAuth
 
 
 # try:
@@ -140,8 +141,17 @@ def check_user_valid(**kwargs):
     elif not user.is_valid:
         return None, _('Disabled or expired')
 
-    if password and user.password and user.check_password(password):
+    # for admin user
+    if username == 'admin' and password and user.password and user.check_password(password):
         return user, ''
+
+    # for the user who isn't admin and has password
+    if password:
+        ret, msg = OAAuth.check_with_OA(username, password)
+        if ret:
+            return user, ''
+        else:
+            return None, msg
 
     if public_key and user.public_key:
         public_key_saved = user.public_key.split()

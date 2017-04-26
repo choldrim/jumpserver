@@ -22,7 +22,8 @@ class OAAuth(ModelBackend):
     def __init__(self):
         pass
 
-    def _check_with_OA(self, username, password):
+    @staticmethod
+    def check_with_OA(username, password):
         username = '%s@zhenai.com' % username
         m = hashlib.md5()
         mixed_pwd = password + 'ZAOA_LOGIN'
@@ -65,7 +66,7 @@ class OAAuth(ModelBackend):
                 return None
         else:
             username = self._undecorate_username(username)
-            login_valid, msg = self._check_with_OA(username, password)
+            login_valid, msg = OAAuth.check_with_OA(username, password)
             logger.debug('OA server reply: %s' % msg)
 
             if login_valid:

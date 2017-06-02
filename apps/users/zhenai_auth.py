@@ -38,7 +38,7 @@ class OAAuth(ModelBackend):
 
         r = requests.post(url, data=d)
         if not r.ok:
-            return False, 'OA server error'
+            return False, 'OA server error - %s' % r.text
         elif r.json().get('ret') != 0:
             return False, r.json().get('msg')
         else:

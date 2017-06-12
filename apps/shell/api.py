@@ -1,4 +1,5 @@
 # coding=utf-8
+
 import os
 import base64
 import json
@@ -22,7 +23,39 @@ logger = get_logger(__name__)
 class SessionFile(APIView):
     permission_classes = (IsValidUser,)
 
-    def render_template(self, request, asset_id, content):
+    def get(self, request, asset_id):
+        ret = {} 
+
+        # try to get asset's name
+        asset = get_object_or_404(Asset, id=asset_id)
+        shell_type = request.query_params.get('shell_type')
+        if shell_type == 'XShell':
+            session_data = self.get_xshell_session_file_data(request, asset)
+        elif shell_type == 'RDP':
+            session_data = self.get_rdp_session_file_data(request, asset)
+            sys_users = asset.system_users.all()
+            if len(sys_users) == 0:
+                err = 'system users not set'
+                logger.error(err)
+                raise Exception(err)
+
+            sys_user = sys_users[0] 
+            ret['password'] = sys_user.password
+
+        else:
+            err = '''"%s" doesn't match any known shell''' % shell_type
+            logger.error(err)
+            ret['err'] = True
+            ret['result'] = err
+            return Response(ret, status=400)
+
+        ret['err'] = False
+        ret['result'] = session_data
+        ret['asset_name'] = asset.hostname
+
+        return Response(ret)
+
+    def render_xshell_template(self, request, asset_id, content):
         template = Template(content)
         token = generate_token(request, request.user)
         c = Context({
@@ -34,48 +67,43 @@ class SessionFile(APIView):
         })
         return template.render(c)
 
-    def get_asset_name(self, asset_id):
-        try:
-            obj = Asset.objects.get(pk=int(asset_id))
-            return obj
-        except Asset.DoesNotExist:
-            logger.debug('asset(%s) not found' % asset_id)
-            return None
-
-    def get(self, request, asset_id):
-        ret = {} 
-
-        # try to get asset's name
-        asset = self.get_asset_name(asset_id)
-        if asset is None:
-            err = 'asset(%s) not found' % asset_id
-            logger.error(err)
-            ret['err'] = True
-            ret['result'] = err
-            return Response(ret, status=404)
-        else:
-            ret['asset_name'] = asset.hostname
-
-        shell_type = request.query_params.get('shell_type')
+    def get_xshell_session_file_data(self, request, asset):
         path_prefix = os.path.join(settings.MEDIA_ROOT, 'files/shell')
-        if shell_type == 'XShell':
-            session_path =  os.path.join(path_prefix, 'xshell_template.xsh')
-        else:
-            err = '''"%s" doesn't match any known shell''' % shell_type
-            logger.error(err)
-            ret['err'] = True
-            ret['result'] = err
-            return Response(ret, status=400)
+        session_path = os.path.join(path_prefix, 'xshell_template.xsh')
 
         # read session file
         with open(session_path) as fp:
             session_data = fp.read()
 
-        session_data = self.render_template(request, asset_id, session_data)
+        session_data = self.render_xshell_template(request, asset.id, session_data)
+        return session_data
 
-        ret['err'] = False
-        ret['result'] = session_data
-        return Response(ret)
+    def render_rdp_template(self, request, asset, content):
+        template = Template(content)
+        token = generate_token(request, request.user)
+        sys_users = asset.system_users.all()
+        if len(sys_users) == 0:
+            err = 'system users not set'
+            logger.error(err)
+            raise Exception(err)
+
+        sys_user = sys_users[0] 
+        c = Context({
+            'full_address': '%s:%s' % (asset.ip, asset.port),
+            'username': sys_user.username,
+        })
+        return template.render(c)
+
+    def get_rdp_session_file_data(self, request, asset):
+        path_prefix = os.path.join(settings.MEDIA_ROOT, 'files/shell')
+        session_path = os.path.join(path_prefix, 'rdp_template.rdp')
+
+        # read session file
+        with open(session_path) as fp:
+            session_data = fp.read()
+
+        session_data = self.render_rdp_template(request, asset, session_data)
+        return session_data
 
 
 class URLSchema(APIView):

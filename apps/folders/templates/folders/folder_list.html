@@ -5,6 +5,10 @@
   <link href="{% static "css/plugins/jstree/style.min.css" %}" rel="stylesheet">
 
 <style type="text/css">
+.shell-selector {
+  display: inline-block;
+  width: 100px;
+}
 #folder-tree {
   display: none;
 }
@@ -48,7 +52,9 @@
       </div>
     </div>
     <div class="host-detail-line connect-btn-line">
-      <button class="btn btn-warning" id="connect-btn">{% trans 'Connect' %}</button>
+      <select id="shell-selector" class="form-control shell-selector">
+      </select>
+      <button class="btn btn-info" id="connect-btn">{% trans 'Connect' %}</button>
     </div>
   </div>
 </div>
@@ -193,10 +199,10 @@ $(document).ready(function () {
     });
 
     $('#connect-btn').click(function(e){
-        $.get("{% url 'api-shell:url-schema' %}", {'asset_id': current_selected_asset, 'shell_type': 'XShell'})
+        var shell_type = get_selected_shell_type();
+        $.get("{% url 'api-shell:url-schema' %}", {'asset_id': current_selected_asset, 'shell_type': shell_type})
             .done(function (data) {
                 var url = data.url;
-                console.log('open url: ' + url);
                 window.open('Jumpserver://' + url, '_self');
             })
             .fail(function (data) {
@@ -212,7 +218,24 @@ $(document).ready(function () {
             $('#public-ip').text(data.public_ip);
             $('#os').text(data.os);
             $('#os-arch').text(data.os_arch);
+            apply_shell_types_selector(data.shell_types);
         }
+    }
+
+    function apply_shell_types_selector(shell_types){
+      $('#shell-selector').children().remove();
+      if(shell_types && shell_types.length){
+        $.each(shell_types, function(index, value){
+          $('#shell-selector').append($('<option>', {
+            value: value,
+            text: value,
+          }))
+        })
+      }
+    }
+
+    function get_selected_shell_type(){
+      return $('#shell-selector').val()
     }
 });
 </script>

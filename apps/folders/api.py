@@ -7,6 +7,9 @@ from .models import Folder
 from assets.models import Asset
 from perms.utils import get_user_granted_assets
 from users.permissions import IsValidUser, IsSuperUser
+from common.utils import get_logger
+
+logger = get_logger('folder.%s' % __name__)
 
 class GetNode(APIView):
     permission_classes = (IsValidUser,)
@@ -110,9 +113,21 @@ class GetContent(APIView):
             'public_ip': asset.public_ip,
             'os': asset.os,
             'os_arch': asset.os_arch,
+            'shell_types': self.get_available_shell_types(asset)
         }
 
         return asset_info
+
+    def get_available_shell_types(self, asset):
+        shell_types = []
+        if asset.platform and asset.platform.lower() == 'windows':
+            shell_types.append('RDP')
+        elif asset.platform and asset.platform.lower() == 'linux':
+            shell_types.append('XShell')
+        else:
+            logger.warning('W: unknown asset(%d) platform' % asset.id)
+
+        return shell_types
 
     def get(self, request):
         _id = request.query_params.get('id')

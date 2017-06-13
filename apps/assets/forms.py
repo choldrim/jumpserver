@@ -45,7 +45,7 @@ class AssetUpdateForm(forms.ModelForm):
         fields = [
             'hostname', 'ip', 'port', 'groups', 'admin_user', 'idc', 'is_active',
             'type', 'env', 'status', 'public_ip', 'remote_card_ip', 'cabinet_no',
-            'cabinet_pos', 'number', 'comment'
+            'cabinet_pos', 'number', 'comment', 'platform'
         ]
         widgets = {
             'groups': forms.SelectMultiple(

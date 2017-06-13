@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^api/ops/', include('ops.urls.api_urls', namespace='api-ops')),
     url(r'^api/shell/', include('shell.urls.api_urls', namespace='api-shell')),
     url(r'^api/folders/', include('folders.urls.api_urls', namespace='api-folders')),
+    url(r'^api/extension/', include('extension.urls.api_urls', namespace='api-extension')),
 
 ]
 

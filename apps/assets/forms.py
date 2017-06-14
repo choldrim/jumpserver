@@ -14,7 +14,8 @@ class AssetCreateForm(forms.ModelForm):
         model = Asset
         fields = [
             'hostname', 'ip', 'public_ip', 'port', 'type', 'comment',
-            'admin_user', 'idc', 'groups', 'status', 'env', 'is_active'
+            'admin_user', 'idc', 'groups', 'status', 'env', 'is_active',
+            'platform'
         ]
         widgets = {
             'groups': forms.SelectMultiple(

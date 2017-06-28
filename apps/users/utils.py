@@ -15,7 +15,6 @@ from django.core.cache import cache
 from common.tasks import send_mail_async
 from common.utils import reverse, get_object_or_none
 from .models import User
-from users.zhenai_auth import OAAuth
 
 
 # try:
@@ -123,6 +122,18 @@ def send_reset_ssh_key_mail(user):
     send_mail_async.delay(subject, message, recipient_list, html_message=message)
 
 
+def OA_user(name):
+    '''
+    check if it is OA user who should be authenticated by OA server
+    '''
+    if name in ['admin', ]:
+        return False
+    elif name.startswith('tmp_'):
+        return False
+    else:
+        return True
+
+
 def check_user_valid(**kwargs):
     password = kwargs.pop('password', None)
     public_key = kwargs.pop('public_key', None)
@@ -141,18 +152,7 @@ def check_user_valid(**kwargs):
     elif not user.is_valid:
         return None, _('Disabled or expired')
 
-    # for admin user
-    if username == 'admin' and password and user.password and user.check_password(password):
-        return user, ''
-
-    # for the user who isn't admin and has password
-    if password:
-        ret, msg = OAAuth.check_with_OA(username, password)
-        if ret:
-            return user, ''
-        else:
-            return None, msg
-
+    # check with public key
     if public_key and user.public_key:
         public_key_saved = user.public_key.split()
         if len(public_key_saved) == 1:
@@ -161,6 +161,23 @@ def check_user_valid(**kwargs):
         elif len(public_key_saved) > 1:
             if public_key == public_key_saved[1]:
                 return user, ''
+
+    # check with password
+    else:
+        # check with OA server
+        if OA_user(username):
+            from users.zhenai_auth import OAAuth
+            ret, msg = OAAuth.check_with_OA(username, password)
+            if ret:
+                return user, ''
+            else:
+                return None, msg
+
+        # check with local user data
+        else:
+            if user.check_password(password):
+                return user, ''
+
     return None, _('Password or SSH public key invalid')
 
 

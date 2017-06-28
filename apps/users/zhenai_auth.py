@@ -11,6 +11,7 @@ from django.contrib.auth.models import Permission
 
 from .models import User
 from common.utils import get_logger
+from .utils import OA_user
 
 logger = get_logger(__name__)
 
@@ -57,7 +58,7 @@ class OAAuth(ModelBackend):
         return username
 
     def authenticate(self, username=None, password=None, **kwargs):
-        if username == 'admin':
+        if not OA_user(username):
             try:
                 UserModel = get_user_model()
                 user = UserModel._default_manager.get_by_natural_key(username)

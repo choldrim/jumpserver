@@ -59,11 +59,14 @@ class OAAuth(ModelBackend):
 
     def authenticate(self, username=None, password=None, **kwargs):
         if not OA_user(username):
-            try:
-                UserModel = get_user_model()
-                user = UserModel._default_manager.get_by_natural_key(username)
+            user_model = get_user_model()
+            query_set = user_model.objects.filter(username=username)
+            if len(query_set) == 0:
+                return None
+            user = query_set[0]
+            if user.check_password(password):
                 return user
-            except UserModel.DoesNotExist:
+            else:
                 return None
         else:
             username = self._undecorate_username(username)

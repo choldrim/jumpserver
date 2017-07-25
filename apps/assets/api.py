@@ -1,5 +1,19 @@
 # ~*~ coding: utf-8 ~*~
 
+# Copyright (C) 2014-2017 Beijing DuiZhan Technology Co.,Ltd. All Rights Reserved.
+#
+# Licensed under the GNU General Public License v2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.gnu.org/licenses/gpl-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from rest_framework import viewsets, generics, mixins
 
 
@@ -106,7 +120,7 @@ class SystemUserUpdateApi(generics.RetrieveUpdateAPIView):
         system_users_new = set(asset.system_users.all())
         system_users = system_users_new - old_system_users
         system_users = [system_user._to_secret_json() for system_user in system_users]
-        push_users.delay([asset], system_users)
+        push_users.delay([asset._to_secret_json()], system_users)
         return response
 
 
@@ -177,6 +191,7 @@ class AssetAdminUserTestView(AssetRefreshHardwareView):
 class AssetGroupPushSystemUserView(generics.UpdateAPIView):
     queryset = AssetGroup.objects.all()
     permission_classes = (IsSuperUser,)
+    serializer_class = serializers.AssetSerializer
 
     def patch(self, request, *args, **kwargs):
         asset_group = self.get_object()

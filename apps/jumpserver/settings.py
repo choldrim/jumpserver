@@ -27,7 +27,7 @@ try:
 
     CONFIG = env_config.get(env, 'default')()
 except ImportError:
-    CONFIG = type('_', (), {'__getattr__': None})()
+    CONFIG = type('_', (), {'__getattr__': lambda arg1, arg2: None})()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'applications.apps.ApplicationsConfig',
     'rest_framework',
+    'rest_framework_swagger',
+    'django_filters',
     'bootstrap3',
     'captcha',
     'django.contrib.auth',
@@ -80,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'jumpserver.middleware.TimezoneMiddleware',
+    'jumpserver.middleware.DemoMiddleware',
 ]
 
 ROOT_URLCONF = 'jumpserver.urls'
@@ -123,6 +126,7 @@ if CONFIG.DB_ENGINE == 'sqlite':
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': CONFIG.DB_NAME or os.path.join(BASE_DIR, 'data', 'db.sqlite3'),
+            'ATOMIC_REQUESTS': True,
         }
     }
 else:
@@ -134,6 +138,7 @@ else:
             'PORT': CONFIG.DB_PORT,
             'USER': CONFIG.DB_USER,
             'PASSWORD': CONFIG.DB_PASSWORD,
+            'ATOMIC_REQUESTS': True,
         }
     }
 
@@ -287,14 +292,31 @@ REST_FRAMEWORK = {
         'users.authentication.PrivateTokenAuthentication',
         'users.authentication.SessionAuthentication',
     ),
-    # 'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
 }
+
+AUTHENTICATION_BACKENDS = [
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Custom User Auth model
 AUTH_USER_MODEL = 'users.User'
 
+
+# Auth LDAP settings
+if CONFIG.AUTH_LDAP:
+    AUTHENTICATION_BACKENDS.insert(0, 'django_auth_ldap.backend.LDAPBackend')
+AUTH_LDAP_SERVER_URI = CONFIG.AUTH_LDAP_SERVER_URI
+AUTH_LDAP_BIND_DN = CONFIG.AUTH_LDAP_BIND_DN
+AUTH_LDAP_BIND_PASSWORD = CONFIG.AUTH_LDAP_BIND_PASSWORD
+AUTH_LDAP_USER_DN_TEMPLATE = CONFIG.AUTH_LDAP_USER_DN_TEMPLATE
+AUTH_LDAP_START_TLS = CONFIG.AUTH_LDAP_START_TLS
+AUTH_LDAP_USER_ATTR_MAP = CONFIG.AUTH_LDAP_USER_ATTR_MAP
+
+
 # Celery using redis as broker
-BROKER_URL = 'redis://%(password)s%(host)s:%(port)s/3' % {
+BROKER_URL = 'redis://:%(password)s@%(host)s:%(port)s/3' % {
     'password': CONFIG.REDIS_PASSWORD + ':' if CONFIG.REDIS_PASSWORD else '',
     'host': CONFIG.REDIS_HOST or '127.0.0.1',
     'port': CONFIG.REDIS_PORT or 6379,
@@ -318,7 +340,7 @@ CELERY_RESULT_BACKEND = BROKER_URL
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': 'redis://%(password)s%(host)s:%(port)s/4' % {
+        'LOCATION': 'redis://:%(password)s@%(host)s:%(port)s/4' % {
             'password': CONFIG.REDIS_PASSWORD + '@' if CONFIG.REDIS_PASSWORD else '',
             'host': CONFIG.REDIS_HOST or '127.0.0.1',
             'port': CONFIG.REDIS_PORT or 6379,

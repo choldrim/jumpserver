@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import os
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 from django.conf import settings
 from rest_framework.response import Response

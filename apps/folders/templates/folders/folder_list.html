@@ -12,10 +12,14 @@
 #folder-tree {
   display: none;
 }
-#error {
+#details {
   display: none;
 }
-#details {
+#hints {
+  display: none;
+}
+#error {
+  color: #a94442;
   display: none;
 }
 </style>
@@ -28,7 +32,8 @@
 
 {% block table_container %}
 <div id="folder-tree" class="col-sm-6"></div>
-<div id="error" class="col-sm-6"></div>
+<div id="hints"></div>
+<div id="error"></div>
 <div id="details" class="details col-sm-6">
   <div class="host-detail">
     <div class="host-detail-line">
@@ -70,13 +75,15 @@ $(document).ready(function () {
     $('#folder-tree').jstree({
         'core': {
             'data': { 
-                'url': "{% url 'api-folders:get-node' %}",
-                'dataType': 'json',
-                'success': function(node){
-                    if(node.length === 0){
-                      $('#error').html('{% trans "no visible project" %}');
+                'url': "{% url 'api-folders:get-node' %}?lazy",
+                'data': function (node) {
+                    return { 'id': node.id };
+                },
+                'success': function(data) {
+                    if(data.length === 0){
+                        $('#hints').html('{% trans "no visible project" %}');
+                        $('#hints').show();
                         $('#folder-tree').hide();
-                        $('#error').show();
                         $('#details').hide();
                     } else {
                         $('#folder-tree').show();
@@ -92,6 +99,11 @@ $(document).ready(function () {
                 }
                 return true;
             },
+        },
+        'types': {
+            'file': {
+              'icon': "{% static 'css/plugins/jstree/server.png' %}"
+            }
         },
         'sort' : function(a, b) {
             return this.get_type(a) === this.get_type(b) ? (this.get_text(a) > this.get_text(b) ? 1 : -1) : (this.get_type(a) >= this.get_type(b) ? 1 : -1);
@@ -189,6 +201,8 @@ $(document).ready(function () {
                 })
                 .fail(function (data) {
                     console.error(data)
+                    $('#error').html(data);
+                    $('#error').show();
                     data.instance.refresh();
                 });
         }
@@ -207,6 +221,8 @@ $(document).ready(function () {
             })
             .fail(function (data) {
                 console.error(data)
+                $('#error').html(data);
+                $('#error').show();
                 data.instance.refresh();
             });
     });

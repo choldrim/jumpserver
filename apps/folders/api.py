@@ -18,21 +18,26 @@ class GetNode(APIView):
         queryset = get_user_granted_assets(self.request.user)
         return queryset
 
-    def get_assets(self, parent):
+    def get_assets(self, parent_id, granted_assets):
         l = []
-        assets = parent.asset_set.all()
-        granted_assets = self.get_granted_assets()
+
+        # don't show the assets without parent
+        if parent_id is None:
+            return l
+
+        assets = Asset.objects.filter(folder=parent_id)
+
         for asset in assets:
             if not self.request.user.is_superuser and asset not in granted_assets:
                 continue
 
             d = {
-                'id': '%d_%d' %(parent.id, asset.id),
+                'id': '%s_%d' %(parent_id, asset.id),
                 'text': asset.hostname,
                 'type': 'file',
-                'icon': 'jstree-file'
             }
             l.append(d)
+
         return l
 
     def get_children(self, parent):
@@ -51,7 +56,7 @@ class GetNode(APIView):
             l.append(d)
         return l
 
-    def get_nodes(self):
+    def get_all_nodes(self):
         l = []
         nodes = Folder.objects.all()
         root_nodes = [node for node in nodes if not node.parent]
@@ -69,11 +74,51 @@ class GetNode(APIView):
 
         return l
 
-    def get_node(self):
-        nodes = self.get_nodes()
-        return nodes
+    def check_child_granted_assets(self, folder, granted_assets):
+        if len(granted_assets) == 0:
+            return False
 
-    def get(self, request, *args, **kwargs):
+        # check assets
+        children_assets = folder.asset_set.all()
+        user_assets = [a for a in children_assets if a in granted_assets]
+        if len(user_assets) > 0:
+            return True
+
+        # check folders
+        children_folders = Folder.objects.filter(parent=folder.id)
+        for folder in children_folders:
+            if self.check_child_granted_assets(folder, granted_assets):
+                return True
+
+        return False
+
+    def get_folders(self, parent_id, granted_assets):
+        l = []
+        folders = Folder.objects.filter(parent=parent_id)
+
+        for folder in folders:
+            if not self.request.user.is_superuser and not self.check_child_granted_assets(folder, granted_assets):
+                continue
+
+            d = {
+                'id': str(folder.id),
+                'text': folder.name,
+                'children': True,
+                'type': 'folder'
+            }
+            l.append(d)
+
+        return l
+
+    def get_node(self, node_id):
+        l = []
+        granted_assets = self.get_granted_assets()
+        l += self.get_folders(node_id, granted_assets)
+        l += self.get_assets(node_id, granted_assets)
+        return l
+
+
+    def get(self, request):
         '''
         nodes = [
             {
@@ -93,8 +138,24 @@ class GetNode(APIView):
                 ]
             }
         ]
+        nodes = [
+            {
+                "id":1,"text":"Root node","children":[
+                    {"id":2,"text":"Child node 1","children":True},
+                    {"id":3,"text":"Child node 2"}
+                ]
+            }
+        ]
         '''
-        nodes = self.get_node()
+        nodes = None
+        if 'lazy' in request.query_params:
+            parent_id = request.query_params['id']
+            if parent_id == '#':
+                parent_id = None
+            nodes = self.get_node(parent_id)
+        else:
+            nodes = self.get_all_nodes()
+
         return Response(nodes)
 
 class GetContent(APIView):

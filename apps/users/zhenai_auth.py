@@ -37,7 +37,7 @@ class OAAuth(ModelBackend):
             "password": mixed_pwd
         }
 
-        r = requests.post(url, data=d)
+        r = requests.post(url, data=d, verify=False)
         if not r.ok:
             return False, 'OA server error - %s' % r.text
         elif r.json().get('ret') != 0:

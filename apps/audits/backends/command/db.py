@@ -14,7 +14,7 @@ class CommandStore(CommandBase):
             proxy_log_id=proxy_log_id, user=user, asset=asset,
             system_user=system_user, command_no=command_no,
             command=command, output=output, timestamp=timestamp
-        )
+        ).save()
 
     def filter(self, date_from_ts=None, date_to_ts=None, user='',
                asset='', system_user='', command='', proxy_log_id=0):

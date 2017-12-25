@@ -5,7 +5,7 @@
 
 // Load the fonts
 Highcharts.createElement('link', {
-	href: 'https://fonts.css.network/css?family=Signika:400,700',
+	href: 'https://fonts.cat.net/css?family=Signika:400,700',
 	rel: 'stylesheet',
 	type: 'text/css'
 }, null, document.getElementsByTagName('head')[0]);
